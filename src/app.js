@@ -7,6 +7,8 @@ import './database';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import swaggerUi from 'swagger-ui-express';
+import swaggerFile from './swagger_output.json';
 
 import resizeImage from './middlewares/resizeImage';
 import tokenRoutes from './routes/tokenRoutes';
@@ -40,6 +42,7 @@ app.use(express.json());
 app.use('/projects/images/', express.static(resolve(__dirname, '..', 'uploads', 'images', 'projects')));
 app.use('/(*_\\d+x\\d+.(jpe?g|png|webp|avif|tiff|gif|svg))', resizeImage);
 
+app.use('/doc/', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use('/token/', tokenRoutes);
 app.use('/user-group/', userGroupRoutes);
 app.use('/user/', userRoutes);

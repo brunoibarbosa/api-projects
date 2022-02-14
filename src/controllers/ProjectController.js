@@ -7,6 +7,21 @@ import ProjectsCategories from '../models/ProjectsCategories';
 
 class ProjectController {
   async index(req, res) {
+    /*
+    #swagger.summary = 'read all projects',
+    #swagger.tags = ['Project'],
+    #swagger.description = 'Obter todos os projetos.',
+
+    #swagger.parameters['limit'] = {
+      description: 'Quantidade máxima de registros que irão retornar.',
+      type: 'integer'
+    },
+    #swagger.parameters['offset'] = {
+      description: 'A partir de quantos registros irá retornar.',
+      type: 'integer'
+    }
+    */
+
     try {
       const projects = await Project.findAll({
         include: [
@@ -25,15 +40,40 @@ class ProjectController {
         ],
         ...res.locals.pagination,
       });
+
+      /*
+      #swagger.responses[200] = {
+        schema: [{ $ref: "#/definitions/Project" }],
+        description: 'Projetos encontrados.'
+      }
+      */
       return res.json(projects);
     } catch (e) {
-      return res.json({
+      return res.status(400).json({
         errors: [e.message],
       });
     }
   }
 
   async create(req, res) {
+    /*
+    #swagger.summary = 'create project',
+    #swagger.tags = ['Project'],
+    #swagger.description = 'Adicionar um projeto.',
+
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Informações do projeto.',
+      required: true,
+      schema: {
+        title: 'string',
+        description: 'string',
+        project_date: '2022-01-01',
+        categories: [0],
+      }
+    }
+    */
+
     const sequelize = new Sequelize(database);
     try {
       const result = await sequelize.transaction(async (t) => {
@@ -72,6 +112,21 @@ class ProjectController {
         };
         return returning;
       });
+
+      /*
+      #swagger.responses[201] = {
+        schema: {
+          id: 0,
+          title: 'string',
+          description: 'string',
+          project_date: '2022-01-01T00:00:00.000Z',
+          created_at: '2022-01-01T00:00:00.000Z',
+          updated_at: '2022-01-01T00:00:00.000Z',
+          categories: [0]
+        },
+        description: 'Projeto registrado com sucesso'
+      }
+      */
       return res.json(result);
     } catch (e) {
       return res.status(400).json({
@@ -81,6 +136,16 @@ class ProjectController {
   }
 
   async show(req, res) {
+    /*
+    #swagger.summary = 'read project',
+    #swagger.tags = ['Project'],
+    #swagger.description = 'Obter um projeto.',
+    #swagger.parameters['id'] = {
+      description: 'ID do projeto.',
+      type: 'integer'
+    }
+    */
+
     try {
       const project = await Project.findOne({
         where: {
@@ -101,15 +166,43 @@ class ProjectController {
           },
         ],
       });
+
+      /*
+      #swagger.responses[200] = {
+        schema: { $ref: "#/definitions/Project" },
+        description: 'Projeto encontrado.'
+      }
+      */
       return res.json(project);
     } catch (e) {
-      return res.json({
+      return res.status(400).json({
         errors: [e.message],
       });
     }
   }
 
   async update(req, res) {
+    /*
+    #swagger.summary = 'update project',
+    #swagger.tags = ['Project'],
+    #swagger.description = 'Atualizar um projeto.',
+
+    #swagger.parameters['id'] = {
+      description: 'ID do projeto.',
+      type: 'integer'
+    }
+
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Informações do projeto.',
+      required: true,
+      schema: {
+        description: 'string',
+        categories: [0],
+      }
+    }
+    */
+
     const sequelize = new Sequelize(database);
     try {
       const result = await sequelize.transaction(async (t) => {
@@ -157,6 +250,21 @@ class ProjectController {
 
         return returning;
       });
+
+      /*
+      #swagger.responses[200] = {
+        schema: {
+          id: 0,
+          title: 'string',
+          description: 'string',
+          project_date: '2022-01-01T00:00:00.000Z',
+          created_at: '2022-01-01T00:00:00.000Z',
+          updated_at: '2022-01-01T00:00:00.000Z',
+          categories: [0]
+        },
+        description: 'Projeto atualizado com sucesso'
+      }
+      */
       return res.json(result);
     } catch (e) {
       return res.status(400).json({
@@ -166,6 +274,17 @@ class ProjectController {
   }
 
   async delete(req, res) {
+    /*
+    #swagger.summary = 'delete project',
+    #swagger.tags = ['Project'],
+    #swagger.description = 'Remover um projeto.',
+
+    #swagger.parameters['id'] = {
+      description: 'ID do projeto.',
+      type: 'integer'
+    }
+    */
+
     try {
       const project = await Project.findByPk(req.params.id);
 
@@ -176,6 +295,20 @@ class ProjectController {
       }
 
       await project.destroy();
+
+      /*
+      #swagger.responses[200] = {
+        schema: {
+          id: 0,
+          title: 'string',
+          description: 'string',
+          project_date: '2022-01-01T00:00:00.000Z',
+          created_at: '2022-01-01T00:00:00.000Z',
+          updated_at: '2022-01-01T00:00:00.000Z',
+        },
+        description: 'Projeto removido com sucesso'
+      }
+      */
       return res.json(project);
     } catch (e) {
       return res.status(400).json({

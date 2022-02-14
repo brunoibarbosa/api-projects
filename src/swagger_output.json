@@ -1,0 +1,1954 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API Portfólio de Projetos",
+    "description": "API desenvolvida para o gerenciamento de portfólio de projetos."
+  },
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "User"
+    },
+    {
+      "name": "User Group"
+    },
+    {
+      "name": "User Group Permission"
+    },
+    {
+      "name": "Category"
+    },
+    {
+      "name": "Project"
+    },
+    {
+      "name": "Project Image"
+    },
+    {
+      "name": "Account Recovery"
+    },
+    {
+      "name": "Token"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "securityDefinitions": {
+    "bearerToken": {
+      "type": "apiKey",
+      "name": "authorization",
+      "in": "header"
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/token/": {
+      "post": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "generate token",
+        "description": "Criar um token de login.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Informações do usuário.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "user@mail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "user@mail.com"
+                    },
+                    "group": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Token criado com sucesso"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/user-group/": {
+      "get": {
+        "tags": [
+          "User Group"
+        ],
+        "summary": "read all groups",
+        "description": "Obter todos os grupos de usuários.",
+        "parameters": [
+          {
+            "name": "offset",
+            "description": "A partir de quantos registros irá retornar.",
+            "type": "integer",
+            "in": "query"
+          },
+          {
+            "name": "limit",
+            "description": "Quantidade máxima de registros que irão retornar.",
+            "type": "integer",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Grupos encontrados.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserGroup"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User Group"
+        ],
+        "summary": "create group",
+        "description": "Adicionar um grupo.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Informações do grupo.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Grupo registrado com sucesso"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/user-group/{id}": {
+      "get": {
+        "tags": [
+          "User Group"
+        ],
+        "summary": "read group",
+        "description": "Obter um grupo.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID do grupo."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Grupo encontrado.",
+            "schema": {
+              "$ref": "#/definitions/UserGroup"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User Group"
+        ],
+        "summary": "update group",
+        "description": "Atualizar um grupo.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID do grupo."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Informações do grupo.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Grupo atualizado com sucesso"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User Group"
+        ],
+        "summary": "delete group",
+        "description": "Remover um grupo.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID do grupo."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Grupo removido com sucesso"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/user-group/{group_id}/permissions": {
+      "get": {
+        "tags": [
+          "User Group Permission"
+        ],
+        "summary": "read permissions",
+        "description": "Obter as permissões de um grupo de usuário.",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID do grupo."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Permissões encontradas.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Permissions"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User Group Permission"
+        ],
+        "summary": "create permissions",
+        "description": "Adicionar permissões para o grupo de usuário.",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID do Grupo."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Informações das permissões.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "route_number": {
+                  "type": "number",
+                  "example": 0
+                },
+                "can_create": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "can_read": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "can_update": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "can_delete": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "group_id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "route_number": {
+                  "type": "number",
+                  "example": 0
+                },
+                "can_create": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "can_read": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "can_update": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "can_delete": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "created_at": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Permissões registradas com sucesso"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User Group Permission"
+        ],
+        "summary": "update permissions",
+        "description": "Atualizar as permissões de um grupo de usuário.",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID do grupo."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Informações das permissões.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "route_number": {
+                  "type": "number",
+                  "example": 0
+                },
+                "can_create": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "can_read": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "can_update": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "can_delete": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Permissões atualizadas com sucesso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "group_id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "route_number": {
+                  "type": "number",
+                  "example": 0
+                },
+                "can_create": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "can_read": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "can_update": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "can_delete": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "created_at": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/user/": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "read all users",
+        "description": "Obter todos os usuários. Acessível apenas por usuários logados.",
+        "parameters": [
+          {
+            "name": "offset",
+            "description": "A partir de quantos registros irá retornar.",
+            "type": "integer",
+            "in": "query"
+          },
+          {
+            "name": "limit",
+            "description": "Quantidade máxima de registros que irão retornar.",
+            "type": "integer",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuários encontrados.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "create user",
+        "description": "Adicionar um usuário. Acessível apenas por usuários logados.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Informações do usuário.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "user@mail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "active": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "group_id": {
+                  "type": "number",
+                  "example": 0
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Usuário registrado com sucesso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "user@mail.com"
+                },
+                "group_id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "created_at": {
+                  "type": "string",
+                  "example": "2022-01-00T00:00:00.000Z0"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "example": "2022-01-00T00:00:00.000Z0"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "read user",
+        "description": "Obter um usuário. Acessível apenas por usuários logados.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID do usuário."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário encontrado.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "update user",
+        "description": "Atualizar um usuário. Acessível apenas por usuários logados.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID do usuário."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Informações do usuário.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "user@mail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "active": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "group_id": {
+                  "type": "number",
+                  "example": 0
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado com sucesso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "user@mail.com"
+                },
+                "active": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "group_id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "created_at": {
+                  "type": "string",
+                  "example": "2022-01-00T00:00:00.000Z0"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "example": "2022-01-00T00:00:00.000Z0"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "delete user",
+        "description": "Remover um usuário. Acessível apenas por usuários logados.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID do usuário."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário removido com sucesso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "user@mail.com"
+                },
+                "active": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "group_id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "created_at": {
+                  "type": "string",
+                  "example": "2022-01-00T00:00:00.000Z0"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "example": "2022-01-00T00:00:00.000Z0"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/category/": {
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "read all categories",
+        "description": "Obter todos as categorias.",
+        "parameters": [
+          {
+            "name": "offset",
+            "description": "A partir de quantos registros irá retornar.",
+            "type": "integer",
+            "in": "query"
+          },
+          {
+            "name": "limit",
+            "description": "Quantidade máxima de registros que irão retornar.",
+            "type": "integer",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categorias encontrados.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Category"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "create category",
+        "description": "Adicionar uma categoria.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Informações da categoria.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "description": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "created_at": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Categoria registrada com sucesso"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/category/{id}": {
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "read category",
+        "description": "Obter uma categoria.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID da categoria."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categoria encontrada.",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "update category",
+        "description": "Atualizar uma categoria.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID da categoria."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Informações do grupo.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categoria atualizada com sucesso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "description": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "created_at": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "delete category",
+        "description": "Remover uma categoria.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID da categoria."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categoria removida com sucesso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "description": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "created_at": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/project/": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "read all projects",
+        "description": "Obter todos os projetos.",
+        "parameters": [
+          {
+            "name": "offset",
+            "description": "A partir de quantos registros irá retornar.",
+            "type": "integer",
+            "in": "query"
+          },
+          {
+            "name": "limit",
+            "description": "Quantidade máxima de registros que irão retornar.",
+            "type": "integer",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Projetos encontrados.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Project"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "create project",
+        "description": "Adicionar um projeto.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Informações do projeto.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "project_date": {
+                  "type": "string",
+                  "example": "2022-01-01"
+                },
+                "categories": {
+                  "type": "array",
+                  "example": [
+                    0
+                  ],
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "title": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "project_date": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                },
+                "created_at": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                },
+                "categories": {
+                  "type": "array",
+                  "example": [
+                    0
+                  ],
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Projeto registrado com sucesso"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/project/{id}": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "read project",
+        "description": "Obter um projeto.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID do projeto."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Projeto encontrado.",
+            "schema": {
+              "$ref": "#/definitions/Project"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "update project",
+        "description": "Atualizar um projeto.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID do projeto."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Informações do projeto.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "categories": {
+                  "type": "array",
+                  "example": [
+                    0
+                  ],
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Projeto atualizado com sucesso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "title": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "project_date": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                },
+                "created_at": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                },
+                "categories": {
+                  "type": "array",
+                  "example": [
+                    0
+                  ],
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "delete project",
+        "description": "Remover um projeto.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID do projeto."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Projeto removido com sucesso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "title": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "project_date": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                },
+                "created_at": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "example": "2022-01-01T00:00:00.000Z"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/project/image/": {
+      "post": {
+        "tags": [
+          "Project Image"
+        ],
+        "summary": "add image",
+        "description": "Adicionar uma imagem ao projeto.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Informações da imagem.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "project_id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "description": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "favorite": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          },
+          {
+            "name": "picture",
+            "in": "formData",
+            "description": "Arquivo de imagem nos formatos PNG, JPEG, WEBP, AVIF, TIFF, GIF ou SVG.",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Imagem adicionada com sucesso",
+            "schema": {
+              "$ref": "#/definitions/ProjectImage"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/project/image/{id}": {
+      "put": {
+        "tags": [
+          "Project Image"
+        ],
+        "summary": "update image",
+        "description": "Atualizar um imagem de projeto.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID da imagem."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Informações da imagem.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "favorite": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Imagem atualizada com sucesso",
+            "schema": {
+              "$ref": "#/definitions/ProjectImage"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Project Image"
+        ],
+        "summary": "delete image",
+        "description": "Remover uma imagem de projeto.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID da imagem."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Imagem removida com sucesso",
+            "schema": {
+              "$ref": "#/definitions/ProjectImage"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/account-recovery/{token}": {
+      "get": {
+        "tags": [
+          "Account Recovery"
+        ],
+        "summary": "read recovery",
+        "description": "Obter uma recuperação de conta.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Token para a recuperação de conta."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recuperação de conta encontrada.",
+            "schema": {
+              "$ref": "#/definitions/AccountRecovery"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Account Recovery"
+        ],
+        "summary": "use recovery",
+        "description": "Recuperar uma conta.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Token para a recuperação de conta."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "where": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Conta recuperada com sucesso"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/account-recovery/": {
+      "post": {
+        "tags": [
+          "Account Recovery"
+        ],
+        "summary": "create recovery",
+        "description": "Adicionar recuperação de conta.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Informações da conta.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "user@mail.com"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Recuperação de conta registrada com sucesso",
+            "schema": {
+              "$ref": "#/definitions/AccountRecovery"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 0
+        },
+        "name": {
+          "type": "string",
+          "example": "string"
+        },
+        "email": {
+          "type": "string",
+          "example": "user@mail.com"
+        },
+        "active": {
+          "type": "boolean",
+          "example": true
+        },
+        "group": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "example": 0
+            },
+            "description": {
+              "type": "string",
+              "example": "string"
+            }
+          }
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2022-01-01T00:00:00.000Z"
+        },
+        "updated_at": {
+          "type": "string",
+          "example": "2022-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    "UserGroup": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 0
+        },
+        "description": {
+          "type": "string",
+          "example": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2022-01-01T00:00:00.000Z"
+        },
+        "updated_at": {
+          "type": "string",
+          "example": "2022-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    "Permissions": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 0
+        },
+        "route_number": {
+          "type": "number",
+          "example": 0
+        },
+        "can_create": {
+          "type": "boolean",
+          "example": true
+        },
+        "can_read": {
+          "type": "boolean",
+          "example": false
+        },
+        "can_update": {
+          "type": "boolean",
+          "example": true
+        },
+        "can_delete": {
+          "type": "boolean",
+          "example": true
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2022-01-01T00:00:00.000Z"
+        },
+        "updated_at": {
+          "type": "string",
+          "example": "2022-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    "Category": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 0
+        },
+        "description": {
+          "type": "string",
+          "example": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2022-01-01T00:00:00.000Z"
+        },
+        "updated_at": {
+          "type": "string",
+          "example": "2022-01-01T00:00:00.000Z"
+        },
+        "projects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 0
+              },
+              "title": {
+                "type": "string",
+                "example": "string"
+              },
+              "description": {
+                "type": "string",
+                "example": "string"
+              },
+              "project_date": {
+                "type": "string",
+                "example": "2022-01-01T00:00:00.000Z"
+              },
+              "images": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "id": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "originalname": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "filename": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "favorite": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "AccountRecovery": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 0
+        },
+        "valid": {
+          "type": "boolean",
+          "example": false
+        },
+        "user_id": {
+          "type": "number",
+          "example": 0
+        },
+        "token": {
+          "type": "string",
+          "example": "string"
+        },
+        "used": {
+          "type": "boolean",
+          "example": true
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2022-01-01T00:00:00.000Z"
+        },
+        "updated_at": {
+          "type": "string",
+          "example": "2022-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    "Project": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 2
+        },
+        "title": {
+          "type": "string",
+          "example": "string"
+        },
+        "description": {
+          "type": "string",
+          "example": "string"
+        },
+        "project_date": {
+          "type": "string",
+          "example": "2022-01-01T00:00:00.000Z"
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2022-01-01T00:00:00.000Z"
+        },
+        "updated_at": {
+          "type": "string",
+          "example": "2022-01-01T00:00:00.000Z"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "example": "string"
+              },
+              "id": {
+                "type": "number",
+                "example": 0
+              },
+              "description": {
+                "type": "string",
+                "example": "string"
+              },
+              "originalname": {
+                "type": "string",
+                "example": "string"
+              },
+              "filename": {
+                "type": "string",
+                "example": "string"
+              },
+              "favorite": {
+                "type": "boolean",
+                "example": true
+              }
+            }
+          }
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 0
+              },
+              "description": {
+                "type": "string",
+                "example": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "ProjectImage": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "example": "string"
+        },
+        "id": {
+          "type": "number",
+          "example": 0
+        },
+        "originalname": {
+          "type": "string",
+          "example": "string"
+        },
+        "filename": {
+          "type": "string",
+          "example": "string"
+        },
+        "description": {
+          "type": "string",
+          "example": "string"
+        },
+        "project_id": {
+          "type": "number",
+          "example": 0
+        },
+        "favorite": {
+          "type": "boolean",
+          "example": true
+        },
+        "updated_at": {
+          "type": "string",
+          "example": "2022-01-01T00:00:00.001Z"
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2022-01-01T00:00:00.001Z"
+        }
+      }
+    }
+  }
+}

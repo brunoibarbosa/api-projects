@@ -20,5 +20,6 @@ module.exports = {
     'no-restricted-syntax': 'off',
     'no-await-in-loop': 'off',
     'no-throw-literal': 'off',
+    'no-trailing-spaces': 'off',
   },
 };

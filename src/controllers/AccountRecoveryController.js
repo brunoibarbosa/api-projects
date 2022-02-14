@@ -4,6 +4,21 @@ import User from '../models/User';
 
 class AccountRecoveryController {
   async create(req, res) {
+    /*
+    #swagger.summary = 'create recovery',
+    #swagger.tags = ['Account Recovery'],
+    #swagger.description = 'Adicionar recuperação de conta.',
+
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Informações da conta.',
+      required: true,
+      schema: {
+        email: 'user@mail.com',
+      }
+    }
+    */
+
     try {
       const user = await User.findOne({
         where: {
@@ -22,6 +37,12 @@ class AccountRecoveryController {
         user_id: user.id,
         token: randomToken,
       });
+
+      /* #swagger.responses[201] = {
+        description: 'Recuperação de conta registrada com sucesso',
+        schema: { $ref: "#/definitions/AccountRecovery" },
+      }
+      */
       return res.json(newAccountRecovery);
     } catch (e) {
       return res.status(400).json({
@@ -31,21 +52,49 @@ class AccountRecoveryController {
   }
 
   async show(req, res) {
+    /*
+    #swagger.summary = 'read recovery',
+    #swagger.tags = ['Account Recovery'],
+    #swagger.description = 'Obter uma recuperação de conta.',
+    #swagger.parameters['token'] = {
+      description: 'Token para a recuperação de conta.',
+      type: 'string'
+    }
+    */
+
     try {
       const recovery = await AccountRecovery.findOne({
         where: {
           token: req.params.token,
         },
       });
+
+      /*
+      #swagger.responses[200] = {
+        schema: { $ref: "#/definitions/AccountRecovery" },
+        description: 'Recuperação de conta encontrada.'
+      }
+      */
       return res.json(recovery);
     } catch (e) {
-      return res.json({
+      return res.status(400).json({
         errors: [e.message],
       });
     }
   }
 
   async recovery(req, res) {
+    /*
+    #swagger.summary = 'use recovery',
+    #swagger.tags = ['Account Recovery'],
+    #swagger.description = 'Recuperar uma conta.',
+
+    #swagger.parameters['token'] = {
+      description: 'Token para a recuperação de conta.',
+      type: 'string'
+    }
+    */
+
     try {
       const recovery = await AccountRecovery.findOne({
         where: {
@@ -81,6 +130,7 @@ class AccountRecoveryController {
 
       await recovery.update({ used: true });
 
+      // #swagger.responses[200] = { description: 'Conta recuperada com sucesso' }
       return res.json({
         id, name, email, active, group_id,
       });

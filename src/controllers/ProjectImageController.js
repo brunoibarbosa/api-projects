@@ -10,6 +10,30 @@ const upload = multer(multerConfig).single('picture');
 
 class ProjectController {
   create(req, res) {
+    /*
+    #swagger.summary = 'add image',
+    #swagger.tags = ['Project Image'],
+    #swagger.description = 'Adicionar uma imagem ao projeto.',
+
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Informações da imagem.',
+      required: true,
+      schema: {
+        project_id: 0,
+        description: 'string',
+        favorite: true,
+      }
+    }
+
+    #swagger.parameters['picture'] = {
+      in: 'formData',
+      description: 'Arquivo de imagem nos formatos PNG, JPEG, WEBP, AVIF, TIFF, GIF ou SVG.',
+      required: true,
+      type: 'file'
+    }
+    */
+
     return upload(req, res, async (err) => {
       if (err) {
         return res.status(400).json({
@@ -43,6 +67,11 @@ class ProjectController {
           originalname, filename, description, project_id, favorite,
         });
 
+        /* #swagger.responses[201] = {
+          description: 'Imagem adicionada com sucesso',
+          schema: { $ref: "#/definitions/ProjectImage" },
+        }
+        */
         return res.json(img);
       } catch (e) {
         return res.status(400).json({
@@ -53,6 +82,27 @@ class ProjectController {
   }
 
   async update(req, res) {
+    /*
+    #swagger.summary = 'update image',
+    #swagger.tags = ['Project Image'],
+    #swagger.description = 'Atualizar um imagem de projeto.',
+
+    #swagger.parameters['id'] = {
+      description: 'ID da imagem.',
+      type: 'integer'
+    }
+
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Informações da imagem.',
+      required: true,
+      schema: {
+        description: "string",
+        favorite: true
+      }
+    }
+    */
+
     try {
       const image = await ProjectImage.findByPk(req.params.id);
 
@@ -65,6 +115,13 @@ class ProjectController {
       const newDescription = req.body.description;
       const newFavorite = req.body.favorite;
       const newData = await image.update({ description: newDescription, favorite: newFavorite });
+
+      /*
+      #swagger.responses[200] = {
+        schema: { $ref: "#/definitions/ProjectImage" },
+        description: 'Imagem atualizada com sucesso'
+      }
+      */
       return res.json(newData);
     } catch (e) {
       return res.status(400).json({
@@ -74,6 +131,17 @@ class ProjectController {
   }
 
   async delete(req, res) {
+    /*
+    #swagger.summary = 'delete image',
+    #swagger.tags = ['Project Image'],
+    #swagger.description = 'Remover uma imagem de projeto.',
+
+    #swagger.parameters['id'] = {
+      description: 'ID da imagem.',
+      type: 'integer'
+    }
+    */
+
     try {
       const image = await ProjectImage.findByPk(req.params.id);
 
@@ -87,6 +155,13 @@ class ProjectController {
       unlink(resolve(__dirname, '..', '..', 'uploads', 'images', 'projects', image.filename), (err) => {
         if (err) throw err;
       });
+
+      /*
+      #swagger.responses[200] = {
+        schema: { $ref: "#/definitions/ProjectImage" },
+        description: 'Imagem removida com sucesso'
+      }
+      */
       return res.json(image);
     } catch (e) {
       return res.status(400).json({

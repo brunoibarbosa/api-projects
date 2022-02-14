@@ -4,6 +4,22 @@ import UserGroup from '../models/UserGroup';
 
 class TokenController {
   async create(req, res) {
+    /*
+    #swagger.summary = 'generate token',
+    #swagger.tags = ['Token'],
+    #swagger.description = 'Criar um token de login.',
+
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Informações do usuário.',
+      required: true,
+      schema: {
+        email: 'user@mail.com',
+        password: 'string',
+      }
+    }
+    */
+
     const { email = '', password = '' } = req.body;
 
     if (!email || !password) {
@@ -42,6 +58,23 @@ class TokenController {
       expiresIn: process.env.TOKEN_EXPIRATION,
     });
 
+    /*
+    #swagger.responses[201] = {
+      schema: {
+        token: 'string',
+        user: {
+          id: 0,
+          name: 'string',
+          email: 'user@mail.com',
+          group: {
+            id: 0,
+            description: 'string'
+          }
+        }
+      },
+      description: 'Token criado com sucesso'
+    }
+    */
     return res.json({
       token,
       user: infoUser,
