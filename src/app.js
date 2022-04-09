@@ -8,7 +8,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import swaggerUi from 'swagger-ui-express';
-import swaggerFile from './swagger_output.json';
+import swaggerFile from '../swagger_output.json';
 
 import resizeImage from './middlewares/resizeImage';
 import tokenRoutes from './routes/tokenRoutes';
